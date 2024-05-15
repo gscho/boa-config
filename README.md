@@ -13,7 +13,7 @@ Natively boa supports:
 
 Boa also supports these configuration types via plugins:
 
-- TOML
+- (TOML)[https://github.com/gscho/boa-toml]
 
 ## Installation
 
@@ -27,7 +27,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-Much like the Golang implementation, boa is meant to be used like a singleton class. By default, the boa singleton class is accessible via a global variable named `$boa`.
+Much like the Golang implementation, boa is meant to be used as a singleton class. By default, the boa singleton class is accessible via a global variable named `$boa`.
 
 ### Setting Defaults
 
@@ -85,20 +85,54 @@ port: 4567
 host: localhost
 YAML
 $boa.read_config(config)
-$boa.automatic_env
 $boa.get("host") #  => "localhost"
 $boa.get("port") #  => 9292
 ```
 
 ### Writing Config Files
 
+Write out a config file `./write_config.yaml`:
+
+```ruby
+config = <<-YAML
+foo: "bar"
+YAML
+$boa.set_config_type("yaml")
+$boa.read_config(config)
+$boa.set_config_name("write_config")
+$boa.write_config
+```
+
+Writing a config file to another directory:
+
+```ruby
+config = <<-YAML
+foo: "bar"
+YAML
+$boa.set_config_type("yaml")
+$boa.read_config(config)
+$boa.set_config_name("write_config")
+$boa.add_config_path("/my/other/directory")
+$boa.write_config
+```
+
 ### Adding Plugins
+
+To add a plugin, update your `Gemfile` or `gemspec` to add the new dependency and then `bundle install`
 
 ### Writing Plugins
 
+There is an example plugin called `foo` in the `test/fixtures` directory.
+
+At a high level:
+
+- The plugin must have a dependency on `boa`
+- The plugin must have a file `lib/boa/plugin/boa_<type>.rb`
+- The plugin must implement `serialize` and `deserialze` functions
+
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/Boa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/Boa/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/gscho/boa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/gscho/boa/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -106,4 +140,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Boa project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/Boa/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the Boa project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/gscho/boa/blob/main/CODE_OF_CONDUCT.md).

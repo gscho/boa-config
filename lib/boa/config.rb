@@ -136,7 +136,7 @@ module Boa
       @type ||= File.extname(@name).delete_prefix(".")
       if @type.empty?
         raise BoaConfigError,
-              "Must provide an extension in the config name or explicitly set the config type"
+              "Must provide a file extension in the config name or explicitly set the config type"
       end
 
       file = "#{File.basename(@name, ".#{@type}")}.#{@type}"
